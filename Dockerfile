@@ -19,6 +19,7 @@ COPY 000-default.conf /etc/apache2/sites-available/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 RUN php artisan key:generate \
+    && composer install \
     && composer dump-autoload \
     && php artisan config:cache \
     && php artisan route:cache \

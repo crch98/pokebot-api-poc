@@ -9,6 +9,7 @@ RUN apt-get update && apt-get install -y \ # corrected typo "install" and added 
     unzip \
     libzip-dev \
     wget \
+    unzip \
     && docker-php-ext-install zip \
     && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \ # replaced "copy" with "curl" command to download composer
     && rm -rf /var/lib/apt/lists/* \ # added line to remove the apt lists to save disk space in the image

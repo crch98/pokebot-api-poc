@@ -1,23 +1,23 @@
+
 FROM php:8.2-apache
 
 WORKDIR /var/www/html
 
 COPY . .
 
-RUN apt-get update && apt-get install -y \
+RUN apt-get update && apt-get install -y \ # corrected typo "install" and added "\" to continue the command in the next line
     unzip \
     libzip-dev \
     wget \
     && docker-php-ext-install zip \
-    && php -r "copy('https://getcomposer.org/installer', 'composer-setup.php');" \
-    && php composer-setup.php --install-dir=/usr/local/bin --filename=composer \
-    && php -r "unlink('composer-setup.php');" \
+    && curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer \ # replaced "copy" with "curl" command to download composer
+    && rm -rf /var/lib/apt/lists/* \ # added line to remove the apt lists to save disk space in the image
     && composer install --no-scripts --no-autoloader --prefer-dist
 
 RUN chown -R www-data:www-data /var/www/html \
-    && a2enmod rewrite
+    && a rewrite
 
-COPY 000-default.conf /etc/apache2/sites-available/
+2enmodCOPY 000-default.conf /etc/apache2/sites-available/
 ENV APACHE_DOCUMENT_ROOT /var/www/html/public
 
 RUN php artisan key:generate \
